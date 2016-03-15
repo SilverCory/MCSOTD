@@ -35,7 +35,6 @@
 
 package co.ryred.mcsotd;
 
-import co.ryred.mcsotd.ChatColor;
 import lombok.Getter;
 import lombok.Setter;
 import org.spacehq.mc.auth.data.GameProfile;
@@ -82,31 +81,53 @@ public class MCSOTD {
         reload();
     }
 
+    public static BufferedImage getFavicon() {
+
+        try {
+
+            File file = new File("server-icon.png");
+            if (!file.exists()) return null;
+
+            BufferedImage image = ImageIO.read(new FileInputStream(file));
+
+            // check size
+            if (image.getWidth() != 64 || image.getHeight() != 64) {
+                throw new IllegalArgumentException("Server icon must be exactly 64x64 pixels");
+            }
+
+            return image;
+
+        } catch (Exception e) {
+            return null;
+        }
+
+    }
+
     public void init() {
         String addr = bindAddr;
-        if( addr == null || addr.isEmpty() ) addr = "0.0.0.0";
-        Server server = new Server( addr, port, MinecraftProtocol.class, new TcpSessionFactory() );
-        server.setGlobalFlag( MinecraftConstants.AUTH_PROXY_KEY, Proxy.NO_PROXY);
+        if (addr == null || addr.isEmpty()) addr = "0.0.0.0";
+        Server server = new Server(addr, port, MinecraftProtocol.class, new TcpSessionFactory());
+        server.setGlobalFlag(MinecraftConstants.AUTH_PROXY_KEY, Proxy.NO_PROXY);
         server.setGlobalFlag(MinecraftConstants.VERIFY_USERS_KEY, false);
-        server.setGlobalFlag(MinecraftConstants.SERVER_INFO_BUILDER_KEY, (ServerInfoBuilder) session -> new ServerStatusInfo(new VersionInfo( ChatColor.translateAlternateColorCodes('&', "&4&lMaintenance"), MinecraftConstants.PROTOCOL_VERSION + 10), new PlayerInfo(1000, 100, new GameProfile[0]), new TextMessage( getColouredMessage() ), getFavicon() ) );
-        server.setGlobalFlag(MinecraftConstants.SERVER_LOGIN_HANDLER_KEY, (ServerLoginHandler) session -> session.disconnect( getColouredMessage() ) );
+        server.setGlobalFlag(MinecraftConstants.SERVER_INFO_BUILDER_KEY, (ServerInfoBuilder) session -> new ServerStatusInfo(new VersionInfo(ChatColor.translateAlternateColorCodes('&', "&4&lMaintenance"), MinecraftConstants.PROTOCOL_VERSION + 10), new PlayerInfo(1000, 100, new GameProfile[0]), new TextMessage(getColouredMessage()), getFavicon()));
+        server.setGlobalFlag(MinecraftConstants.SERVER_LOGIN_HANDLER_KEY, (ServerLoginHandler) session -> session.disconnect(getColouredMessage()));
         server.setGlobalFlag(MinecraftConstants.SERVER_COMPRESSION_THRESHOLD, 100);
 
         this.server = server;
     }
 
     private String getColouredMessage() {
-        return ChatColor.translateAlternateColorCodes( '&', message ).replace( "\\n", "\n" );
+        return ChatColor.translateAlternateColorCodes('&', message).replace("\\n", "\n");
     }
 
     public void start() {
-        if( this.server == null ) init();
-        if( isListening() ) throw new IllegalStateException( "Server is already running!" );
+        if (this.server == null) init();
+        if (isListening()) throw new IllegalStateException("Server is already running!");
         server.bind();
     }
 
     public void stop() {
-        if( this.server == null || !isListening() ) return;
+        if (this.server == null || !isListening()) return;
         this.server.close();
     }
 
@@ -118,50 +139,27 @@ public class MCSOTD {
         }
     }
 
-    public static BufferedImage getFavicon() {
-
-        try {
-
-            File file = new File( "server-icon.png" );
-            if( !file.exists() ) return null;
-
-            BufferedImage image = ImageIO.read( new FileInputStream( file ) );
-
-            // check size
-            if ( image.getWidth() != 64 || image.getHeight() != 64 )
-            {
-                throw new IllegalArgumentException( "Server icon must be exactly 64x64 pixels" );
-            }
-
-            return image;
-
-        } catch ( Exception e ) {
-            return null;
-        }
-
-    }
-
     public void reload() {
         Properties properties = new Properties();
         try {
-            File file = new File( "server.properties" );
-            if( file.exists() )
-                properties.load( new FileReader( file ) );
+            File file = new File("server.properties");
+            if (file.exists())
+                properties.load(new FileReader(file));
 
-            if( !properties.containsKey( "hold-message" ) )
+            if (!properties.containsKey("hold-message"))
                 properties.setProperty("hold-message", "&cWe're currently down for maintanance!\\n&aWe'll be back soon!");
 
-            if( !properties.containsKey( "server-port" ) )
+            if (!properties.containsKey("server-port"))
                 properties.setProperty("server-port", "25565");
 
-            properties.store( new FileWriter( file ), "Edited by MCSOTD!" );
+            properties.store(new FileWriter(file), "Edited by MCSOTD!");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        this.message = properties.getProperty( "hold-message", "&cWe're currently down for maintanance!\\n&aWe'll be back soon!" );
+        this.message = properties.getProperty("hold-message", "&cWe're currently down for maintanance!\\n&aWe'll be back soon!");
         this.port = Integer.parseInt(properties.getProperty("server-port", "25565"));
-        this.bindAddr = properties.getProperty( "server-ip" );
+        this.bindAddr = properties.getProperty("server-ip");
     }
 
 }

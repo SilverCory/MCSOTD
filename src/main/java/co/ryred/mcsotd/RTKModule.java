@@ -49,7 +49,7 @@ public class RTKModule extends Module {
 
     private MCSOTD mcsotd;
 
-    public RTKModule(ModuleMetadata moduleMetadata, ModuleLoader moduleLoader, ClassLoader classLoader ) {
+    public RTKModule(ModuleMetadata moduleMetadata, ModuleLoader moduleLoader, ClassLoader classLoader) {
         super(moduleMetadata, moduleLoader, classLoader, ToolkitEvent.ON_SERVER_HOLD, ToolkitEvent.ON_SERVER_RESTART);
     }
 

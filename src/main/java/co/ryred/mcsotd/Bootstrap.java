@@ -48,38 +48,38 @@ public class Bootstrap {
 
     public static MCSOTD mcsotd = null;
 
-    public static void main( String... args ) throws IOException {
+    public static void main(String... args) throws IOException {
 
         startMcsotd();
 
-        BufferedReader br = new BufferedReader( new InputStreamReader( System.in ) );
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         String line;
-        System.out.print( ">" );
-        while( (line = br.readLine()) != null ) {
-            if( line.startsWith( "stop" ) ) {
+        System.out.print(">");
+        while ((line = br.readLine()) != null) {
+            if (line.startsWith("stop")) {
                 stopMcsotd();
                 break;
-            } else if( line.startsWith( "reload" ) ) {
-                if( mcsotd == null ) mcsotd = new MCSOTD();
+            } else if (line.startsWith("reload")) {
+                if (mcsotd == null) mcsotd = new MCSOTD();
                 mcsotd.reload();
                 System.out.println("Reloaded.");
-            } else if( line.startsWith( "restart" ) ) {
+            } else if (line.startsWith("restart")) {
                 stopMcsotd();
                 startMcsotd();
                 System.out.println("Restarted.");
             }
-            System.out.print( ">" );
+            System.out.print(">");
         }
 
     }
 
     private static void startMcsotd() {
-        if( mcsotd != null ) {
-            System.out.println( "MCSOTD Already running O_O" );
+        if (mcsotd != null) {
+            System.out.println("MCSOTD Already running O_O");
             return;
         }
-        new Thread( "MCSOTD Thread" ) {
+        new Thread("MCSOTD Thread") {
             @Override
             public void run() {
                 mcsotd = new MCSOTD();
@@ -89,7 +89,7 @@ public class Bootstrap {
     }
 
     private static void stopMcsotd() {
-        if( mcsotd != null ) mcsotd.stop();
+        if (mcsotd != null) mcsotd.stop();
         mcsotd = null;
     }
 
