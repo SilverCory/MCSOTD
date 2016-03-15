@@ -117,7 +117,7 @@ public class MCSOTD {
     }
 
     private String getColouredMessage() {
-        return ChatColor.translateAlternateColorCodes('&', message).replace("\\n", "\n");
+        return ChatColor.translateAlternateColorCodes('&', message).replace("\\r", "").replace("\\n", "\n");
     }
 
     public void start() {
