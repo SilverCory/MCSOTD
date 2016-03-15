@@ -39,6 +39,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+/**
+ * Stolen from org.bukkit.ChatColor. Sorry :P
+ * The above licence doesn't apply and this class is under GNUv3.
+ */
 public enum ChatColor {
     BLACK('0', "black"),
     DARK_BLUE('1', "dark_blue"),
