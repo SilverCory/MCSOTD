@@ -68,6 +68,13 @@ public class Bootstrap {
                 stopMcsotd();
                 startMcsotd();
                 System.out.println("Restarted.");
+            } else if (line.startsWith("help")) {
+                System.out.println("reload  - reloads the message");
+                System.out.println("restart - reloads the message");
+                System.out.println("stop    - stops and exits");
+                System.out.println("help    - Do I need to explain?");
+            } else {
+                System.out.println("Unknown command, type 'help' for a list of commands!");
             }
             System.out.print(">");
         }
