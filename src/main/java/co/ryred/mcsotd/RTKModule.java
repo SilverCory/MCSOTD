@@ -58,6 +58,7 @@ public class RTKModule extends Module {
 
         this.mcsotd = new MCSOTD();
         this.mcsotd.start();
+        System.out.println("Started the MCSOTD server!");
 
     }
 
@@ -65,6 +66,7 @@ public class RTKModule extends Module {
     public void onDisable() {
 
         this.mcsotd.stop();
+        System.out.println("Stopped the MCSOTD server!");
 
     }
 }
