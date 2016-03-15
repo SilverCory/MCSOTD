@@ -1,0 +1,4 @@
+name:MCSignOnTheDoor
+main:co.ryred.mcsotd.RTKModule
+version:${pom.version}-B#${env.BUILD_NUMBER}
+author:Cory Redmond
