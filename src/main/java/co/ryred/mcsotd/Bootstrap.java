@@ -72,6 +72,8 @@ public class Bootstrap {
             System.out.print(">");
         }
 
+        System.out.println("Goodbye!");
+
     }
 
     private static void startMcsotd() {
